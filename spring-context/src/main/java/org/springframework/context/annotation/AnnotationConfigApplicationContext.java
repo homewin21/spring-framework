@@ -54,9 +54,14 @@ import org.springframework.util.Assert;
  * @see org.springframework.context.support.GenericXmlApplicationContext
  */
 public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
-
+	/**
+	 * 注解bean定义读取器，主要作用是用来读取被注解的了bean
+	 */
 	private final AnnotatedBeanDefinitionReader reader;
 
+	/**
+	 * 扫描器，它仅仅是在我们外部手动调用 .scan 等方法才有用，常规方式是不会用到scanner对象的
+	 */
 	private final ClassPathBeanDefinitionScanner scanner;
 
 
@@ -65,6 +70,12 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigApplicationContext() {
+		//这里还隐式调用了父类GenericApplicationContext的无参构造函数
+		//public GenericApplicationContext() {
+		//		初始化beanFactory
+		//		this.beanFactory = new DefaultListableBeanFactory();
+		//	}
+		//StartupStep是用于标记执行的操作和记录上下文与时间
 		StartupStep createAnnotatedBeanDefReader = this.getApplicationStartup().start("spring.context.annotated-bean-reader.create");
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 		createAnnotatedBeanDefReader.end();

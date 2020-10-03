@@ -195,10 +195,12 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 		super(parent);
 		Assert.notNull(paths, "Path array must not be null");
 		Assert.notNull(clazz, "Class argument must not be null");
+		//加载配置文件所在的路径
 		this.configResources = new Resource[paths.length];
 		for (int i = 0; i < paths.length; i++) {
 			this.configResources[i] = new ClassPathResource(paths[i], clazz);
 		}
+		//refresh这个IOC容器，如果已经存在对应容器的话则destroy-create-init
 		refresh();
 	}
 
