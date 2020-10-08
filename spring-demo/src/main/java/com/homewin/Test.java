@@ -1,6 +1,6 @@
 package com.homewin;
 
-//import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * @description:
@@ -10,8 +10,8 @@ package com.homewin;
 
 public class Test {
 	public static void main(String[] args) {
-//		AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(HelloConfig.class);
-//		Hello hello = ac.getBean(Hello.class);
-//		hello.hello();
+		AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(HelloConfig.class);
+		Hello hello = ac.getBean(Hello.class);
+		hello.hello();
 	}
 }
