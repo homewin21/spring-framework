@@ -84,6 +84,12 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * {@link Configuration @Configuration} classes
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
+		//调用无参的构造函数用于初始化成员变量
+		//AnnotatedBeanDefinitionReader：这个是用于读取被注解的类定义
+		//ClassPathBeanDefinitionScanner：类路径扫描器
+		//隐式调用父级无参构造函数初始化容器的部分属性
+		//包括了定义了id，log之类的成员变量
+		//比较重要的是初始化了beanFactory
 		this();
 		register(componentClasses);
 		refresh();
