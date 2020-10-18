@@ -262,27 +262,33 @@ public class AnnotatedBeanDefinitionReader {
 		abd.setScope(scopeMetadata.getScopeName());
 		//生成一个beanName以TestConfig为例，生成的beanName是"testConfig"
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
+		//加载一些声明注解,包括这些：
+		//1、@Primary 是否为首选类--当一个接口存在多个实现类又未显示定义具体的声明时，只会采取其中的一种，如果使用@Primary注解则会优先注入这个类
+		//2、@Lazy 是否为懒加载--使用时才加载到IOC容器
+		//3、@DependsOn 定义类加载依赖
+		//4、@Role 0：用户定义的类 1：（字段解释是一些较大配置的一部分，通常是外部配置）2：spring内部类
+		//5、@Description 生成javadoc
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
 				if (Primary.class == qualifier) {
 					abd.setPrimary(true);
-				}
-				else if (Lazy.class == qualifier) {
+				} else if (Lazy.class == qualifier) {
 					abd.setLazyInit(true);
-				}
-				else {
+				} else {
 					abd.addQualifier(new AutowireCandidateQualifier(qualifier));
 				}
 			}
 		}
+		//bean的定制器，Spring 5允许使用lambda 表达式来自定义注册一个 bean，初始化容器的时候默认传null进来
 		if (customizers != null) {
 			for (BeanDefinitionCustomizer customizer : customizers) {
 				customizer.customize(abd);
 			}
 		}
-
+		//生成一个holder，保存的是beanName和对应的beanDefinition
 		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
+		//设置
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);
 	}

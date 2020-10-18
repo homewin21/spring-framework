@@ -22,10 +22,19 @@ package org.springframework.context.annotation;
  * <p>For a more complete discussion of exactly what a scoped proxy is, see the
  * section of the Spring reference documentation entitled '<em>Scoped beans as
  * dependencies</em>'.
+ * <p>
+ * ========官方文档解释如下：===============
+ * The Spring IoC container manages not only the instantiation of your objects (beans),
+ * but also the wiring up of collaborators (or dependencies)【IOC容器同时管理对象实例化和依赖项之间的连接】.
+ * If you want to inject (for example)
+ * an HTTP request-scoped bean into another bean of a longer-lived scope, you may choose to inject
+ * an AOP proxy in place of the scoped bean. That is, you need to inject a proxy object that exposes
+ * the same public interface as the scoped object but that can also retrieve【检索】 the real target object
+ * from the relevant【相关】 scope (such as an HTTP request) and delegate method calls onto the real object.
  *
  * @author Mark Fisher
- * @since 2.5
  * @see ScopeMetadata
+ * @since 2.5
  */
 public enum ScopedProxyMode {
 
