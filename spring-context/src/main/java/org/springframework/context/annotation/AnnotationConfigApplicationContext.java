@@ -92,6 +92,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		//包括了定义了id，log之类的成员变量
 		//比较重要的是初始化了beanFactory
 		this();
+		//把传入的配置对象[TestConfig]解析并注册到IOC容器中
 		register(componentClasses);
 		refresh();
 	}

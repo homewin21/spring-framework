@@ -288,8 +288,9 @@ public class AnnotatedBeanDefinitionReader {
 		}
 		//生成一个holder，保存的是beanName和对应的beanDefinition
 		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
-		//设置
+		//设置类代理模式
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+		//将类定义保存到IOC容器也就是beanFactory中，包括别名
 		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);
 	}
 

@@ -513,13 +513,23 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		return this.applicationListeners;
 	}
 
+	/**
+	 * 加载持久化的配置文件来创建IOC容器
+	 * 每次调用这个方法的时候会销毁原有的容器进行创建
+	 *
+	 * @throws BeansException        if the bean factory could not be initialized
+	 * @throws IllegalStateException if already initialized and multiple refresh
+	 *                               attempts are not supported
+	 */
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			// 加载上下文的配置文件，刷新原有容器
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			//清空原有beanFactory，生成新的beanFactory
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
@@ -552,9 +562,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Last step: publish corresponding event.
 				finishRefresh();
-			}
-
-			catch (BeansException ex) {
+			} catch (BeansException ex) {
 				if (logger.isWarnEnabled()) {
 					logger.warn("Exception encountered during context initialization - " +
 							"cancelling refresh attempt: " + ex);
@@ -568,9 +576,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Propagate exception to caller.
 				throw ex;
-			}
-
-			finally {
+			} finally {
 				// Reset common introspection caches in Spring's core, since we
 				// might not ever need metadata for singleton beans anymore...
 				resetCommonCaches();
@@ -598,10 +604,13 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment.
+		//加载上下文配置文件
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable:
 		// see ConfigurablePropertyResolver#setRequiredProperties
+		// 获取配置文件中是否缺少了必要的属性
+		// @throws MissingRequiredPropertiesException 当出现必要配置不存在时抛出.
 		getEnvironment().validateRequiredProperties();
 
 		// Store pre-refresh ApplicationListeners...

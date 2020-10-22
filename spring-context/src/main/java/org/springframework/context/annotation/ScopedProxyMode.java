@@ -32,6 +32,11 @@ package org.springframework.context.annotation;
  * the same public interface as the scoped object but that can also retrieve【检索】 the real target object
  * from the relevant【相关】 scope (such as an HTTP request) and delegate method calls onto the real object.
  *
+ * 在@Scope和@SessionScope中通过设置proxyMode的值来选择代理的模式
+ * 关于代理模式的说明参考自：https://cloud.tencent.com/developer/article/1429932
+ * INTERFACES：java动态代理
+ * TARGET_CLASS：CGLIB实现的动态代理
+ *
  * @author Mark Fisher
  * @see ScopeMetadata
  * @since 2.5
