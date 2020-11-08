@@ -547,7 +547,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Initialize message source for this context.
 				initMessageSource();
-
+				//结合《spring揭秘》5.3相关内容阅读效果更佳^_^
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
 
@@ -772,6 +772,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void initApplicationEventMulticaster() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+		//判断如果beanFactory中存在applicationEventMulticaster这个类的话则直接使用
+		//	applicationEventMulticaster:是定义了具体事件发布和事件监听器的注册
+		//		也就是完成了java事件模式[event,listener,publisher]中的后两者所作的工作来监听和发布event
 		if (beanFactory.containsLocalBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME)) {
 			this.applicationEventMulticaster =
 					beanFactory.getBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, ApplicationEventMulticaster.class);
@@ -779,6 +782,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				logger.trace("Using ApplicationEventMulticaster [" + this.applicationEventMulticaster + "]");
 			}
 		}
+		//不存在则实例化这个接口的对应实现类SimpleApplicationEventMulticaster并注册到容器中
 		else {
 			this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
 			beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);

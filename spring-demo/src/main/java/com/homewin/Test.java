@@ -1,5 +1,6 @@
 package com.homewin;
 
+import com.homewin.processor.model.PoJo;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -11,6 +12,9 @@ public class Test {
 		AnnotationConfigApplicationContext context =
 				new AnnotationConfigApplicationContext(TestConfig.class);
 		Hello hello = (Hello) context.getBean("Hello");
+		PoJo poJo = (PoJo) context.getBean("poJo");
+		context.getBeanFactory().destroySingletons();
 		hello.hello();
+
 	}
 }
