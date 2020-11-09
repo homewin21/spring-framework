@@ -531,7 +531,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			// Tell the subclass to refresh the internal bean factory.
 			//清空原有beanFactory，生成新的beanFactory
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
-
+			//设置beanFactory的一些对应属性例如classLoader之类和一些预先注册的bean如ENVIRONMENT_BEAN之类的
 			// Prepare the bean factory for use in this context.
 			prepareBeanFactory(beanFactory);
 
@@ -540,18 +540,27 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+				//参考《spring解密》4.4.2 P68 中的讲解
+				//容器会把实现BeanFactoryPostProcessor的类进行调用
+				//把容器中的BeanDefinition进行一些相应的修改 比如修改某些属性之类的
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				//将beanPostProcessor注册到容器中
+				//在类实例化前后的时候会有相应的节点可以进行对应的操作
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
+				// 初始化国际化设置
 				initMessageSource();
 				//结合《spring揭秘》5.3相关内容阅读效果更佳^_^
 				// Initialize event multicaster for this context.
+				// 初始化容器事件模式的相关bean
+				// 也就是负责publisher和listener的ApplicationEventMulticaster
 				initApplicationEventMulticaster();
 
-				// Initialize other special beans in specific context subclasses.
+				// Initialize other special beans in specific context subclasses
+				// 某些IOC容器子类还需要初始化一些特殊的bean
 				onRefresh();
 
 				// Check for listener beans and register them.
